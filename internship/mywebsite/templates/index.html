@@ -1,0 +1,77 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+<br>
+
+
+
+<div class="container col-11">
+
+    <div class="card shadow">
+        <div class="card-header">
+          <span style="font-family: 'Work Sans', sans-serif; font-size: 30px">Scarped URLs</span>
+              <form action="/fetchInterestingUrl" method="get" class="float-right" id="fetchDataForm">
+        
+                <select data-menu="horizontal" id="website-url" name='urls'>
+                    <option selected>interesting_urls</option>
+                    <option>non_interesting_urls</option>
+                  </select>
+        
+                <select data-menu="horizontal" id="website-select" name='website'>
+                  <option selected>Select Website</option>
+                  <option>eventshigh.com</option>
+                  <option>insider.in</option>
+                  <option>naadyogacouncil.com</option>
+                </select>
+          
+                <button class="btn btn-outline-success">submit</button>
+              </form>
+
+
+
+        </div>
+        <div class="card-body">
+        
+            <div class="shadow p-3 mb-2 rounded alert alert-primary alert">
+                <span> URL Type: <span id="url-type-show" style="font-family: 'Grenze', serif; font-style: bold; font-size: 20px; text-decoration: underline;"></span></span>
+                <span class="float-right mr-2"> Website: <span id="website-show"style="font-family: 'Rubik', serif; font-style: bold; font-size: 20px"></span></span>
+
+
+            </div>
+    
+                <table class="table table-bordered mt-3">
+                    <thead>
+                      <tr>
+                        <th scope="col">#</th>
+                        <th scope="col" >URL</th>
+                        <th scope="col" >Status</th>
+            
+                      </tr>
+                    </thead>
+                    <tbody>
+            
+                      {% for url in urls %}
+                      <tr>
+                        <th scope="row">{{ forloop.counter }}</th>
+                        <td  style="font-family: 'Roboto Mono', sans-serif; ">{{url.url}}</td>
+                        <td  style="font-family: 'Roboto Mono', sans-serif; "><a href="#" class="btn btn-info">{{url.status}}</a></td>
+
+                      </tr>
+               
+                      
+                      {% endfor %}
+                     
+                    </tbody>
+                  </table>
+
+         
+          <a href="/" class="btn btn-primary">Reload</a>
+        </div>
+      </div>
+
+</div>
+
+
+
+
+{% endblock %}
