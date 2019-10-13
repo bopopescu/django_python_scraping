@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.forms import UserCreationForm
-from .models import FetchInterestingUrl, FetchNonInterestingUrl, Users
+from .models import FetchInterestingUrl, FetchNonInterestingUrl, Users, Admin
 
 
 def index(request):
@@ -82,25 +82,58 @@ def logout(request):
 
 
 def scrapingAdmin(request):
-    website = request.GET.get("website")
-    # print(website)
-    if (website == "eventshigh.com"):
-        print("eventshigh.com")
-        from .eventshigh_com import main
-    elif(website == "insider.in"):
-        print("insider.in")
-        from .insider_in import main
-    elif(website == "naadyogacouncil.com"):
-        print("naadyogacouncil.com")
-        from .naadyogacouncil_com import main
-    else:
-        print("No website")
-    return render(request, "admin/index.html", {'status': 'ok'})
+    try:
+        admin = request.session['admin']
+        print("admin: ", admin)
+        if(admin == 1):
+            website = request.GET.get("website")
+            # print(website)
+            if (website == "eventshigh.com"):
+                print("eventshigh.com")
+                from .eventshigh_com import main
+            elif(website == "insider.in"):
+                print("insider.in")
+                from .insider_in import main
+            elif(website == "naadyogacouncil.com"):
+                print("naadyogacouncil.com")
+                from .naadyogacouncil_com import main
+            else:
+                print("No website")
+            return render(request, "admin/index.html", {'status': 'ok'})
+        else:
+            return redirect('/admin999/')
+    except:
+        return redirect('/admin999/')
     # return HttpResponse("Scraping")
 
 
 def admin(request):
-    return render(request, "admin/admin.htm", {'status': 'ok'})
+    email = request.POST.get('email')
+    password = request.POST.get('password')
+    print(email, " - " , password)
+    if(email != '' and password != ''):
+        admin = Admin.objects.filter(email=email).filter(password=password)
+        print(len(admin), admin)
+        if(len(admin) != 0):
+            request.session['admin'] = 1
+        else:
+            request.session['admin'] = 0
+    status = 'login'
+    try:
+        admin = request.session['admin']
+        if(admin == 1):
+            status = 'logged'
+            print('Admin Login')
+        else:
+            status = 'login'
+    except:
+        status = 'login'
+    if(status == 'logged'):
+        return render(request, "admin/index.html", {'status': status})
+    else:
+        return render(request, "admin/admin.html", {'status': status})
+        
+
 
 
 

@@ -22,3 +22,10 @@ class Users(models.Model):
 
     class Meta:
         db_table = 'users'
+
+
+class Admin(models.Model):
+    email = models.CharField(max_length=200)
+    password = models.CharField(max_length=200)
+    class Meta:
+        db_table = 'admin'
