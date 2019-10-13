@@ -41,16 +41,32 @@ let loginForm = '<form method="POST" id="signup-form" class="signup-form"> <h2 c
 
 
 
-
+$(".scraping-processing").hide();
 $(".scraping-btn").click(function() {
+    $('.scraping-btn').attr("disabled", true);
     website = $(this).attr('id');
+    switch (website) {
+        case 'eventshigh.com':
+            $("#eventshigh_com_processing").show();
+            break;
+        case 'insider.in':
+            $("#insider_in_processing").show();
+            break;
+        case 'naadyogacouncil.com':
+            $('#naadyogacouncil_com_processing').show();
+        default:
+            break;
+    }
     console.log(website);
     $.ajax({
         url: "/scraping_admin/",
-        type: 'POST',
-        data: {wesite: website},
+        type: 'GET',
+        data: {'website': website},
         success: function(data){
-            console.log(data);
+            alert("Scraping Successful!")
+            console.log("Success");
+
+            location.reload(); 
         }
     })
 })

@@ -82,15 +82,19 @@ def logout(request):
 
 
 def scrapingAdmin(request):
-    website = request.POST.get("website")
+    website = request.GET.get("website")
+    # print(website)
     if (website == "eventshigh.com"):
         print("eventshigh.com")
+        from .eventshigh_com import main
     elif(website == "insider.in"):
         print("insider.in")
+        from .insider_in import main
     elif(website == "naadyogacouncil.com"):
         print("naadyogacouncil.com")
+        from .naadyogacouncil_com import main
     else:
-        pass
+        print("No website")
     return render(request, "admin/index.html", {'status': 'ok'})
     # return HttpResponse("Scraping")
 
