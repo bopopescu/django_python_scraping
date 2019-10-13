@@ -99,7 +99,8 @@ def scrapingAdmin(request):
     # return HttpResponse("Scraping")
 
 
-
+def admin(request):
+    return render(request, "admin/admin.htm", {'status': 'ok'})
 
 
 
